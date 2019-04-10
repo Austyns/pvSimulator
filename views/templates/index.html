@@ -1,0 +1,103 @@
+<html>
+	<head>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+	    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+		<!-- angularjs -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.js"></script>
+		<!-- Chatjs -->
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+		<!-- Angular-chatjs -->
+		<script src="http://cdn.jsdelivr.net/angular.chartjs/latest/angular-chart.min.js"></script> 
+
+	</head>
+	<body>
+			
+
+		<div class="container" ng-app="app">
+			
+			<center style="margin: 5%; list-style-type: none;">
+				
+			    <h2>WELCOME TO your Consumption Dashboard</h2>
+			    <p>Events occur in realtime...</p>
+			</center>
+
+			<div class="container" style="background-color: #fff;" ng-controller="LineCtrl">
+				<div class="panel panel-default">
+					<div class="panel-header">
+						<!-- <h2>Bla bla</h2> -->
+					</div>
+					<div class="panel-body">
+						<canvas id="line" class="chart chart-line" chart-data="data"
+						chart-labels="labels" chart-series="series" chart-options="options"
+						chart-dataset-override="datasetOverride" chart-click="onClick" style="width: 80%;">
+						</canvas>
+					</div>
+				</div>
+					
+			</div>
+
+		</div>
+
+	</body>
+
+	<script type="text/javascript">
+		angular.module("app", ["chart.js"]).controller("LineCtrl", function ($scope, $interval, $http) {
+
+			$scope.labels = [];
+			$scope.series = ['Power (KW)'];
+			$scope._data = []
+			$scope.data = []
+			$scope.onClick = function (points, evt) {
+				console.log(points, evt);
+			};
+			$scope.datasetOverride = [{ yAxisID: 'y-axis' }];
+			$scope.options = {
+				scales: {
+					yAxes: [
+						{
+							id: 'y-axis',
+							type: 'linear',
+							display: true,
+							position: 'left'
+						}
+					]
+				}
+			};
+
+			const getNewReadings = () => {
+				$http.get("http://localhost:8000/simulations/consumptions/").then(function(response) {
+					// console.log(response.data.results)
+					let res = response.data.results;
+					let labels_ = []
+					let _data_ = []
+					for (var i = 0; i < res.length; i++) {
+						let _this = res[i];
+						let dt = new Date(_this.registered_at)
+						labels_.push(dt.toLocaleString())
+						_data_.push(_this.power)
+					}
+					$scope.labels = labels_;
+					$scope.data = [_data_];
+				});
+			}
+
+			const callAtInterval = () => {
+				getNewReadings();
+			}
+
+			$interval(callAtInterval, 7000);
+
+		});
+
+	</script>
+</html>

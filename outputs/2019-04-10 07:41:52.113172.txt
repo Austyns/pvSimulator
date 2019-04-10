@@ -1,0 +1,1 @@
+{"meter_reading": 4814, "pv": 1203.5, "duration": 0.25}
