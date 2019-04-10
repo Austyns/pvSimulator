@@ -1,5 +1,6 @@
 # PV SImulator
 #### This is a Python Django projects that at interval simulates power usages from the home
+![In a single picture](https://raw.githubusercontent.com/Austyns/pvSimulator/master/screen1.png)
 
 ## Depeendencies
 - Python 3
