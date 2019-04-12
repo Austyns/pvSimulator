@@ -13,7 +13,7 @@
 - First intall VirtualEnv to conatinerize app `sudo apt-get install virtualenv`
 - Create a python3 virtual env to run the app `virtualenv env --python=python3`
 - Active the virtulenv `source env/bin/activate`
-- Clone project from git `git clone https://github.com/austyns/pvSimulation`
+- Clone project from git `git clone https://github.com/Austyns/pvSimulator.git`
 - cd into the project root and install project dependencies `pip install -r requirements.txt`
 - Install rabitMQ if not setup yet to serve as broker for celery
 	- ```sudo apt-get install -y erlang```
