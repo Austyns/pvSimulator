@@ -24,7 +24,7 @@
 	- `sudo systemctl start rabbitmq-server`
 
 - Run migration to generate models
-	`python manage.my migrate`
+	`python manage.py migrate`
 
 - Serve the project locally
 	`python manage.my runserver`
