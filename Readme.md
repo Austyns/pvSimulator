@@ -10,6 +10,7 @@
 - RabbitMQ
 
 ## Setup
+(Note: This setup covers for only linux debian users )
 - First intall VirtualEnv to conatinerize app `sudo apt-get install virtualenv`
 - Create a python3 virtual env to run the app `virtualenv env --python=python3`
 - Active the virtulenv `source env/bin/activate`
